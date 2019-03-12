@@ -1,0 +1,18 @@
+language: bash
+services: docker
+sudo: required
+
+env:
+  - OS=ubuntu HADOOP_VERSION=3.2.0 SHORT_TAG=3 LATEST=true
+  - OS=ubuntu HADOOP_VERSION=3.1.2
+  - OS=ubuntu HADOOP_VERSION=2.9.2 SHORT_TAG=2
+
+script:
+  - travis_wait 50 docker build --build-arg hadoop_version=${HADOOP_VERSION} -f Dockerfile.${OS} -t crs4/hadoop-nativelibs:${HADOOP_VERSION}-${OS} .
+
+deploy:
+  - provider: script
+    script: bash push.sh
+    on:
+      repo: crs4/hadoop-nativelibs-docker
+      branch: master
