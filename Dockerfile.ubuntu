@@ -12,7 +12,7 @@ ENV M2_HOME="${maven_home}"
 ENV M2="${M2_HOME}/bin"
 ENV PATH="${M2}:${PATH}"
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-COPY install_*.sh *.patch build_native_libs.sh /
+COPY install_*.sh *.patch build_native_libs.sh rescue_hdfs_libs.sh /
 ADD "${apache_repo}"/hadoop/common/hadoop-${hadoop_version}/hadoop-${hadoop_version}-src.tar.gz /
 ADD "${apache_repo}"/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz /
 ADD https://github.com/protocolbuffers/protobuf/releases/download/v${protobuf_version}/protobuf-${protobuf_version}.tar.bz2 /
@@ -22,6 +22,7 @@ RUN tar xf hadoop-${hadoop_version}-src.tar.gz && \
 RUN bash /install_deps_ubuntu.sh
 RUN bash /install_deps_manual.sh
 RUN bash /build_native_libs.sh
+RUN bash /rescue_hdfs_libs.sh
 
 FROM ubuntu:18.04
 ARG target
