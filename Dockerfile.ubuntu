@@ -1,12 +1,13 @@
-ARG hadoop_version=3.2.0
+ARG hadoop_version=3.2.1
 ARG target=/hadoop_native
 
-FROM ubuntu:18.04 AS build
+FROM ubuntu:20.04 AS build
 ARG hadoop_version
 ARG target
+ENV DEBIAN_FRONTEND=noninteractive
 ENV apache_repo=http://www-eu.apache.org/dist
 ENV maven_home=/opt/maven
-ENV maven_version=3.6.0
+ENV maven_version=3.6.3
 ENV protobuf_version=2.5.0
 ENV M2_HOME="${maven_home}"
 ENV M2="${M2_HOME}/bin"
@@ -24,6 +25,6 @@ RUN bash /install_deps_manual.sh
 RUN bash /build_native_libs.sh
 RUN bash /rescue_hdfs_libs.sh
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 ARG target
 COPY --from=build "${target}" "${target}"
